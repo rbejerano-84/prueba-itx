@@ -1,7 +1,0 @@
-C:\Users\rbejeranoe\Documents\itx-level-test-main\app-service\src\main\java\com\itx\ws\controller\PriceController.java
-C:\Users\rbejeranoe\Documents\itx-level-test-main\app-service\src\main\java\com\itx\ws\exception\GlobalExceptionHandler.java
-C:\Users\rbejeranoe\Documents\itx-level-test-main\app-service\src\main\java\com\itx\ws\exception\PriceNotFoundException.java
-C:\Users\rbejeranoe\Documents\itx-level-test-main\app-service\src\main\java\com\itx\ws\mapper\PriceWsMapper.java
-C:\Users\rbejeranoe\Documents\itx-level-test-main\app-service\target\generated-sources\openapi\src\main\java\com\itx\ws\api\ApiUtil.java
-C:\Users\rbejeranoe\Documents\itx-level-test-main\app-service\target\generated-sources\openapi\src\main\java\com\itx\ws\api\PricesApi.java
-C:\Users\rbejeranoe\Documents\itx-level-test-main\app-service\target\generated-sources\openapi\src\main\java\com\itx\ws\dto\generated\PriceResponse.java
