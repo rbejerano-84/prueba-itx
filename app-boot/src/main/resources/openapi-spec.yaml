@@ -1,0 +1,160 @@
+openapi: 3.0.3
+info:
+  title: ITX Price Query API
+  description: |-
+    API for querying applicable prices for products at specific dates.
+    
+    **Business Rules:**
+    - Returns the price with highest priority for the given parameters
+    - Filters by brand, product and application date range
+    
+  version: 1.0.0
+  contact:
+    name: ITX Development Team
+    email: dev@itx.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+  - url: https://api-staging.itx.com
+    description: Staging environment  
+  - url: https://api.itx.com
+    description: Production environment
+
+tags:
+  - name: prices
+    description: Price query operations
+    externalDocs:
+      description: Business documentation
+      url: https://docs.itx.com/prices
+
+paths:
+  /api/v1/prices:
+    get:
+      tags:
+        - prices
+      summary: Get applicable price for product
+      description: |-
+        Retrieves the applicable price for a specific product and brand at a given date and time.
+        
+        **Priority Logic:** 
+        When multiple price records match the criteria, returns the one with highest priority value.
+        
+      operationId: getApplicablePrice
+      parameters:
+        - name: applicationDate
+          in: query
+          description: Date and time when the price should be applied (ISO 8601 format)
+          required: true
+          schema:
+            type: string
+            format: date-time
+            example: "2020-06-14T10:00:00"
+          example: "2020-06-14T16:00:00"
+        - name: productId
+          in: query  
+          description: Product identifier
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+            example: 35455
+        - name: brandId
+          in: query
+          description: Brand identifier (1 = ZARA)
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+            example: 1
+      responses:
+        '200':
+          description: Price found successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceResponse'
+              examples:
+                example1:
+                  summary: Morning price
+                  description: Price applicable at 10:00 AM
+                  value:
+                    productId: 35455
+                    brandId: 1
+                    priceList: 1
+                    startDate: "2020-06-14T00:00:00"
+                    endDate: "2020-12-31T23:59:59"
+                    price: 35.50
+                    curr: "EUR"
+                example2:
+                  summary: Afternoon promotional price
+                  description: Special promotional price from 15:00 to 18:30
+                  value:
+                    productId: 35455
+                    brandId: 1
+                    priceList: 2
+                    startDate: "2020-06-14T15:00:00"
+                    endDate: "2020-06-14T18:30:00"
+                    price: 25.45
+                    curr: "EUR"
+
+components:
+  schemas:
+    PriceResponse:
+      type: object
+      required:
+        - productId
+        - brandId
+        - priceList
+        - startDate
+        - endDate
+        - price
+        - curr
+      properties:
+        productId:
+          type: integer
+          format: int64
+          description: Product identifier
+          example: 35455
+          minimum: 1
+        brandId:
+          type: integer
+          format: int64
+          description: Brand identifier (1 = ZARA)
+          example: 1
+          minimum: 1
+        priceList:
+          type: integer
+          format: int32
+          description: Price list identifier
+          example: 1
+          minimum: 1
+        startDate:
+          type: string
+          format: date-time
+          description: Price validity start date and time
+          example: "2020-06-14T00:00:00"
+        endDate:
+          type: string
+          format: date-time  
+          description: Price validity end date and time
+          example: "2020-12-31T23:59:59"
+        price:
+          type: number
+          format: decimal
+          description: Final price to apply
+          example: 35.50
+          minimum: 0
+          exclusiveMinimum: true
+        curr:
+          type: string
+          description: Currency ISO code
+          example: "EUR"
+          minLength: 3
+          maxLength: 3
+          pattern: "^[A-Z]{3}$"
