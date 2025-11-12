@@ -1,0 +1,96 @@
+openapi: 3.0.1
+info:
+  title: Api Precios
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+tags:
+  - name: Price
+    description: Operaciones para gestionar los rangos de precios
+paths:
+  /api/v1/findByIdRange:
+    post:
+      tags:
+        - Price
+      summary: Obtiene el precio aplicable para un producto, marca y fecha dados
+      operationId: getPriceByIdIdCadDate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: Precio encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessResponsePriceResponseDTO'
+        '400':
+          description: Solicitud inválida
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '404':
+          description: No se encontró precio para los parámetros proporcionados
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+components:
+  schemas:
+    PriceRequestDTO:
+      required:
+        - applicationDate
+        - brandId
+        - productId
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        brandId:
+          type: integer
+          format: int64
+        applicationDate:
+          pattern: ^\d{4}-\d{2}-\d{2}-\d{2}\.\d{2}\.\d{2}$
+          type: string
+    ApiSuccessResponsePriceResponseDTO:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        msg:
+          type: string
+        data:
+          $ref: '#/components/schemas/PriceResponseDTO'
+    PriceResponseDTO:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        brandId:
+          type: integer
+          format: int64
+        priceList:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        price:
+          type: number
+        currency:
+          type: string
