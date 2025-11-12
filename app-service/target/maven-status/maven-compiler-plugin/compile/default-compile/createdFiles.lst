@@ -1,0 +1,8 @@
+com\itx\ws\exception\GlobalExceptionHandler.class
+com\itx\ws\mapper\PriceWsMapperImpl.class
+com\itx\ws\exception\PriceNotFoundException.class
+com\itx\ws\controller\PriceController.class
+com\itx\ws\dto\generated\PriceResponse.class
+com\itx\ws\api\ApiUtil.class
+com\itx\ws\api\PricesApi.class
+com\itx\ws\mapper\PriceWsMapper.class
